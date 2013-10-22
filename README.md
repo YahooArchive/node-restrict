@@ -34,3 +34,10 @@ try {
     console.log(e);
 }
 ```
+# Build Status
+
+[![Build Status](https://secure.travis-ci.org/yahoo/node-restrict.png?branch=master)](http://travis-ci.org/yahoo/node-restrict)
+
+# Node Badge
+
+[![NPM](https://nodei.co/npm/restrict.png)](https://nodei.co/npm/restrict/)
