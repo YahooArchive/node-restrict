@@ -1,0 +1,37 @@
+{
+  "name": "restrict",
+  "description": "Restricts applications from calling certain methods on process and all methods on child_process",
+  "version": "0.0.1",
+  "author": "Rohini Harendra <rohini.raghav@gmail.com>",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/yahoo/restrict.git"
+  },
+  "bugs": {
+      "url" : "http://github.com/yahoo/restrict/issues"
+  },
+  "keywords": [
+    "restrict", "yahoo"
+  ],
+  "licenses":[
+        {
+            "type" : "BSD",
+            "url" : "https://github.com/yahoo/restrict/blob/master/LICENSE"
+        }
+    ],
+  "engines": { "node": ">=0.6" },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "jshint": "~0.9.0",
+    "yui-lint": "~0.1.1",
+    "istanbul": "~0.1.8",
+    "vows": "*"
+  },
+  "main": "./lib/index.js",
+  "scripts": {
+      "pretest": "jshint --config ./node_modules/yui-lint/jshint.json ./lib/",
+      "test": "istanbul cover --print both vows -- --spec ./tests/*.js"
+  }
+}
+
