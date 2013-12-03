@@ -16,10 +16,17 @@ npm install restrict
 # usage
 ```js
 
-require('restrict');
+var restrict = require('restrict');
+// ls is whitelisted
+restrict(['ls']);
 
 var child_process = require('child_process');
 try {
+    // ls is whitelisted. So you can see the output of ls
+    child_process.exec('ls', function (err, stdout, stderr) {
+        console.log(stdout);
+    });
+    // grep is not whitelisted. Exception thrown
     child_process.spawn('grep', ['ssh']);
 } catch (e) {
     //this will throw an error
