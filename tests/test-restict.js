@@ -8,7 +8,10 @@ var vows = require('vows'),
 
 var restrict = require('..');
 // Add ls to whitelist
-restrict('[ls]');
+restrict({
+    'whitelist': ['ls'],
+    'whitelistPath': '/bin'
+});
 
 var tests = {
     
@@ -31,7 +34,7 @@ var tests = {
         topic: function () {
 	    var self = this;
 	    try {
-		require('child_process').exec('ls',['-ltr']);
+		require('child_process').exec('/bin/ls',['-ltr']);
                 self.callback(null, {});
 	    } catch (e) {
 		self.callback(null, {

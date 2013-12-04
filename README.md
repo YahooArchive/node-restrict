@@ -18,12 +18,15 @@ npm install restrict
 
 var restrict = require('restrict');
 // ls is whitelisted
-restrict(['ls']);
+restrict({
+    'whitelist': ['ls'],
+    'whitelistPath': '/bin'
+});
 
 var child_process = require('child_process');
 try {
     // ls is whitelisted. So you can see the output of ls
-    child_process.exec('ls', function (err, stdout, stderr) {
+    child_process.exec('/bin/ls', function (err, stdout, stderr) {
         console.log(stdout);
     });
     // grep is not whitelisted. Exception thrown
