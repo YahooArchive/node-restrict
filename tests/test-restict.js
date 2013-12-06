@@ -6,7 +6,12 @@
 var vows = require('vows'),
     assert = require('assert');
 
-require('..');
+var restrict = require('..');
+// Add ls to whitelist
+restrict({
+    'whitelist': ['ls'],
+    'whitelistPath': '/bin'
+});
 
 var tests = {
     
@@ -23,6 +28,23 @@ var tests = {
 	},
 	'verify error': function (topic) {
 	    assert.ok(topic.error !== null);
+	}
+    },
+    'testing restrict child_process methods whitelist': {
+        topic: function () {
+	    var self = this;
+	    try {
+		require('child_process').exec('/bin/ls',['-ltr']);
+                self.callback(null, {});
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+            
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error === undefined);
 	}
     },
     'testing restrict kill method': {
