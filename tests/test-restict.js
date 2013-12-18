@@ -34,6 +34,23 @@ var tests = {
         topic: function () {
 	    var self = this;
 	    try {
+		require('child_process').exec('ls',['-ltr']);
+                self.callback(null, {});
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+            
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error === undefined);
+	}
+    },
+    'testing restrict child_process methods whitelist absolute': {
+        topic: function () {
+	    var self = this;
+	    try {
 		require('child_process').exec('/bin/ls',['-ltr']);
                 self.callback(null, {});
 	    } catch (e) {
