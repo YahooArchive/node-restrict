@@ -21,8 +21,6 @@
     ],
   "engines": { "node": ">=0.6" },
   "dependencies": {
-    "async": "*",
-    "underscore": "*"
   },
   "devDependencies": {
     "jshint": "~0.9.0",
