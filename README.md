@@ -20,7 +20,7 @@ var restrict = require('restrict');
 // ls is whitelisted
 restrict({
     'whitelist': ['ls'],
-    'whitelistPath': '/bin'
+    'whitelistPath': ['/bin']
 });
 
 var child_process = require('child_process');
