@@ -10,7 +10,7 @@ var restrict = require('..');
 // Add ls to whitelist
 restrict({
     'whitelist': ['ls'],
-    'whitelistPath': '/bin'
+    'whitelistPath': ['/bin', '/usr/bin']
 });
 
 var tests = {
