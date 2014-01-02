@@ -1,7 +1,7 @@
 {
   "name": "restrict",
   "description": "Restricts applications from calling certain methods on process and all methods on child_process",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": "Rohini Harendra <rohini.raghav@gmail.com>",
   "repository": {
       "type": "git",
