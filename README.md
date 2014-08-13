@@ -23,6 +23,9 @@ restrict({
     'whitelistPath': ['/bin']
 });
 
+//set whitelist can be invoked, if the whitelist is dynamic
+restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);
+
 var child_process = require('child_process');
 try {
     // ls is whitelisted. So you can see the output of ls
