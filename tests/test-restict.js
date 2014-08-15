@@ -159,9 +159,10 @@ var tests_next = {
         'testing restrict with setWhitelist child_process methods whitelist': {
         topic: function () {
 	    var self = this;
-	    restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);    
 	    try {
+		restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);
 		require('child_process').spawn('grep',['BLA', './*']);
+		self.callback(null, {});
 	    } catch (e) {
 		self.callback(null, {
 		    'error': e
@@ -170,6 +171,40 @@ var tests_next = {
 	},
 	'verify error': function (topic) {
 	    assert.ok(topic.error === undefined);
+	}
+    },
+    'testing restrict with setWhitelist child_process methods whitelist with full path': {
+        topic: function () {
+	    var self = this;
+	    try {
+		restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);
+		require('child_process').spawn('/usr/bin/grep',['BLA', './*']);
+		self.callback(null, {});
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error === undefined);
+	}
+    },
+    'testing restrict with setWhitelist child_process methods whitelist with not whitelist path': {
+        topic: function () {
+	    var self = this;
+	    try {
+		restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);
+		require('child_process').spawn('/usr/bin64/grep',['BLA', './*']);
+		self.callback(null, {});
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error);
 	}
     },
     'testing restrict with setWhitelist child_process methods non-whitelist': {
@@ -184,10 +219,33 @@ var tests_next = {
 		    'error': e
 		});
 	    }
-            
 	},
 	'verify error': function (topic) {
 	    assert.ok(topic.error !== null);
+	}
+    },
+    'testing restrict with setWhitelist with not arguments child_process methods non-whitelist': {
+        topic: function () {
+	    var self = this;
+	    try {
+		restrict.setWhitelist();
+	    } catch(e) {
+		self.callback(null, {
+		    'error1': e
+		});
+	    }
+	    try {
+		require('child_process').exec('ls',['-ltr']);
+                self.callback(null, {});
+	    } catch (e) {
+		self.callback(null, {
+		    'error2': e
+		});
+	    }
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error1 === undefined);
+	    assert.ok(topic.error2 !== null);
 	}
     },
 
