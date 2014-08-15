@@ -1,7 +1,7 @@
 {
   "name": "restrict",
   "description": "Restricts applications from calling certain methods on process and all methods on child_process",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Rohini Harendra <rohini.raghav@gmail.com>",
   "repository": {
       "type": "git",
@@ -23,9 +23,9 @@
   "dependencies": {
   },
   "devDependencies": {
-    "jshint": "~0.9.0",
-    "yui-lint": "~0.1.1",
-    "istanbul": "~0.1.8",
+    "jshint": "*",
+    "yui-lint": "*",
+    "istanbul": "*",
     "vows": "*"
   },
   "main": "./lib/index.js",

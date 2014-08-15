@@ -9,7 +9,7 @@ var vows = require('vows'),
 var restrict = require('..');
 // Add ls to whitelist
 restrict({
-    'whitelist': ['ls'],
+    'whitelist': ['ls', 'foo.bar'],
     'whitelistPath': ['/bin', '/usr/bin']
 });
 
@@ -41,12 +41,33 @@ var tests = {
 		    'error': e
 		});
 	    }
-            
 	},
 	'verify error': function (topic) {
 	    assert.ok(topic.error === undefined);
 	}
     },
+    'testing restrict child_process methods relative whitelist': {
+	
+        topic: function () {
+	    var self = this;
+	    try {
+		require('child_process').exec('xyz/foo.bar',['-ltr']);
+		require('child_process').exec('./foo.bar',['-ltr']);
+		require('child_process').exec('../foo.bar',['-ltr']);
+		require('child_process').exec('./tmp/foo.bar',['-ltr']);
+		require('child_process').exec('foo.bar',['-ltr']);
+                self.callback(null, {});
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+            
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error === undefined);
+	}
+    },    
     'testing restrict child_process methods whitelist absolute': {
         topic: function () {
 	    var self = this;
@@ -133,4 +154,42 @@ var tests = {
 	}
     }
 }
-vows.describe('restrict').addBatch(tests).export(module);
+
+var tests_next = {
+        'testing restrict with setWhitelist child_process methods whitelist': {
+        topic: function () {
+	    var self = this;
+	    restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);    
+	    try {
+		require('child_process').spawn('grep',['BLA', './*']);
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error === undefined);
+	}
+    },
+    'testing restrict with setWhitelist child_process methods non-whitelist': {
+        topic: function () {
+	    var self = this;
+	    try {
+		restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);    
+		require('child_process').exec('ls',['-ltr']);
+                self.callback(null, {});
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+            
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error !== null);
+	}
+    },
+
+}
+vows.describe('restrict').addBatch(tests).addBatch(tests_next).export(module);
