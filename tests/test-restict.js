@@ -13,6 +13,11 @@ restrict({
     'whitelistPath': ['/bin', '/usr/bin']
 });
 
+//vows hack to print uncaught exceptions
+process.on('uncaughtException', function(err) {
+    console.log('Caught exception: ' + err.stack);
+});
+
 var tests = {
     
     'testing restrict child_process methods': {
@@ -100,6 +105,21 @@ var tests = {
 	    assert.ok(topic.error !== null);
 	}
     },
+    'testing restrict _kill method': {
+        topic: function () {
+	    var self = this;
+	    try {
+		process._kill(process.pid, 30);
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error !== null);
+	}
+    },    
     'testing restrict process_wrap method': {
         topic: function () {
 	    var self = this;
@@ -115,16 +135,31 @@ var tests = {
 	    assert.ok(topic.error !== null);
 	}
     },
+    'testing restrict _linkedBinding for process_wrap method': {
+        topic: function () {
+	    var self = this;
+	    try {
+		(process._linkedBinding && process._linkedBinding('process_wrap')) || process.binding('process_wrap');
+	    } catch (e) {
+		self.callback(null, {
+		    'error': e
+		});
+	    }
+	},
+	'verify error': function (topic) {
+	    assert.ok(topic.error !== null);
+	}
+    },    
     'testing restrict other binding method': {
         topic: function () {
 	    var self = this;
 	    try {
-		process.binding('evals');
+		process.binding('timer_wrap');
+                process._linkedBinding && process._linkedBinding('timer_wrap')
 		self.callback(null, {
 		    error: null 
 		});
 	    } catch (e) {
-		console.log(e);
 		self.callback(null, {
 		    'error': e
 		});
@@ -177,8 +212,8 @@ var tests_next = {
         topic: function () {
 	    var self = this;
 	    try {
-		restrict.setWhitelist(['grep'], ['/bin', '/usr/bin']);
-		require('child_process').spawn('/usr/bin/grep',['BLA', './*']);
+		restrict.setWhitelist(['ls'], ['/bin', '/usr/bin']);
+		require('child_process').spawn('/bin/ls', ['-lh', '/usr']);
 		self.callback(null, {});
 	    } catch (e) {
 		self.callback(null, {
