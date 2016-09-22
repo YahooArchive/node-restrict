@@ -39,7 +39,9 @@ var tests = {
         topic: function () {
 	    var self = this;
 	    try {
-		require('child_process').exec('ls',['-ltr']);
+		require('child_process').exec('ls');
+                require('child_process').exec('ls -l /tmp');
+                require('child_process').spawn('ls', ['-lh', '/usr']);
                 self.callback(null, {});
 	    } catch (e) {
 		self.callback(null, {
